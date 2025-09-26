@@ -1,0 +1,34 @@
+1) Can databases be in memory?
+chance of loosing data over a period of time.
+
+2) In-memory database = cache
+
+3) How do databases store data?
+hardware -> magnetic tape, solid state disk
+
+4) Algorithm used when storing data?
+In relational database, B+ Tree are used.
+pages, hashtables, pointers
+Relational DB -> queried using sql
+Other DB are queried by NOSQL(key, value) stores
+
+Databases are usually consistent, available to incoming request, single source of truth
+
+5) Graph database
+store data internally as nodes and edges
+used to perform graph queries efficiently
+Enable user to perform graph operation in relaational DB
+
+6) Time-series DB
+stores record that are part of time-series
+Aggregate & compress time-stamped data.
+few time series DB are written on top of relational DB
+
+7) object oriented Database
+work with objects
+implemented using relational DB
+
+
+8) what database should you choose?
+POSTGRE -> consistency, durability, read replice (if down) but no availability.
+casandra -> cluster architecture, availability(if on of the nodes goes down, rest of the node will take responsibility), fault tolerance, not consistent.
