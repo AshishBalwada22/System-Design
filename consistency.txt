@@ -1,0 +1,115 @@
+Consistency -
+
+1) Linearizable Consistency - 
+All changes which have happenend in the database before the read operation will be reflected in the read query.
+Read operation will result in the most upto date data.
+
+Implementation -  single threaded-single server
+Advantage - highly consistent
+Disadvantage - 
+    Head of line blocking - single point of failure
+    High latency(time taken to process a request successfully)
+Example -
+    x = 5 
+    read x  // 5
+    write x = 6
+    write x = 7
+    read x  // 7 
+
+2) Eventual consistency 
+In starting, we are returning the stale data but after sometime, when all write operation will be updated, the system will be consistent.
+
+Implementation - when read and write request execute parallely(multiple server) or concurrently(multiple threads).
+
+i.e write request is made before read request but read request is processed first.
+
+3) Casual consistency
+current operation is depend upon the previous operation then pervious operation operation executed first.
+
+i.e x = 5
+    y = 6
+    read x // 5
+    y = 7
+    read x // 5
+
+value of x is independent on the value of y operations. 1st, 3rd and 5th operation will be processed on single server or thread.
+x = 5 should be executed first before read operation
+operation on same key will be processed sequentially.
+
+Implementation - if multiple process run simuntanously, then casual consistency will be broken, so use lock here.
+
+Disadvantage - casual consistency fails in case of aggregation operations(operation on all keys).
+
+
+4) Quorum
+multiple replicas in the database, may or may not be in sync.
+we get the data from all the replicas, then we will return the result in the form of majority value or last updated value.
+
+quorum is Eventual consistent.
+x = 5,  x = 5, x = 5
+x = 10, x = 5, x = 5 (write operation on first replica)
+if first replica is crashed, result = 5 (stale value)
+once first replica is online again, then we will get correct result.
+
+R + W > N (strong consistent system)
+i.e 3 replicas, 2(read operation) + 2(write operation) > 3(replicas) , if any of db is crashed, we get the latest result
+
+R + W <= N (eventual consistent system)
+
+R = minimum number of replicas, we need to read data from
+W = minimum number of replicas, we need to write to
+N = number of replicas
+
+5) Transaction isolation levels
+if two Transaction are running concurrently and queries in one Transaction donot affect the other transaction, then two transaction can said to be isolated each other.
+
+begin
+commit - end of the transaction and reflected latest data in db
+rollback - end of the transaction and undo all the changes to the database.
+
+a) read uncommitted
+in the isolation, uncommitted data can be read by concurrent transaction.
+i.e x=5,  T1(x = 10) , T2(read x) // 10 , T1(rollback), x becomes 5 again.
+but T2 reads a value, that doesn't exist which leads to dirty read.
+
+b) read committed
+in this isolation, one transaction can only read committed data from other transaction.
+this lead to non-repeatable read.
+i.e x = 5, 
+    T1(x=10)
+    T2(read x) // 5 as value of x is updated to 10 in T1 transaction but T2 read only committed data from T1
+    T1(commit)
+    T2(read x) // 10, this leads to non-repeatable read, transaction read the same row twice but get different value.
+
+Implementation -> local copy of change value -> older value of key stays in the database, newer value keeps in local copy until commit is done.
+
+c) repeatable read
+in this isolation, i make sure that if i read particular value multiple times in my transaction, then i should get the same value.
+Implementation -> snapshot isolation -> each transaction has its own copy of data. when any transaction is committed, only updated should be persisted in the database.
+                  versioning of unchanged value
+
+Optimistic councurrency control -> if two transaction concurrently changes the same key key to different value, then we must rollback the transaction.
+
+d) serializable isolation level -
+we use this isolation level to avoid phantom read.
+phantom read occurs when two identical read queries executed but result of second query is different from the result of first query.
+It is different from repeatable read because it is due to insertion of new row.
+
+i.e id | value
+    1     10
+    2     20
+T1(sum) // 30
+T2(add new value 3 | 30)
+T2(commit)
+T1(sum)  // 60
+
+Implementation -> queue locked
+
+for efficiency 
+uncommitted read > committed read > repeatable read > serializable
+
+for isolation (one transaction cannot depend upon other transaction)
+uncommitted read < committed read < repeatable read < serializable
+
+
+
