@@ -34,6 +34,7 @@ class Notificationservice{
   static unique_ptr<Inotifier> createobject(const string&channel){
     if(channel=="email") return make_unique<emailsender>();
     else if(channel=="sms") return make_unique<smssender>();
+    // unique_ptr<interface>   ,  make_unique<concreteclass>()
     // return unique_ptr of interface, not concrete class.
     //unique_ptr is a smart pointer, automatically deallocate memory when it goes out of scope.
   }
