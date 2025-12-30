@@ -29,6 +29,7 @@ class newProcessPayment : public Ipaymentprocessor{
     // as unique_ptr is non-copyable
     // move is used to transfer the ownership from the temporary unique_ptr parameter(service) to service_ member variable
     // ownership of oldPaymentService object is transferred from "legacy" to "service_" member inside newProcessPayment object.
+    // it's service_ responsibility to deallocate the dynamically allocated oldPaymentService object
     void processingPayment(int dollor) override{
         long rupees = dollor*80;
         service_->makePaymentinRupees(rupees);
