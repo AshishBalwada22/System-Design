@@ -42,3 +42,5 @@ Race condition - that's why we need mutual exclusion
 Critical section - code must run by one thread at a time
 
 RAII - Resource Acquisition Is Initialization
+
+prefer lock_guard, guard the exact shared state you mutate(change)
