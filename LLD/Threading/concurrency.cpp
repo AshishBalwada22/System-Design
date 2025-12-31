@@ -23,9 +23,13 @@ core2
 Task3 -> Task4 -> Task3 -> Task4
 
 // 1 core is equivalent to 1 thread, thread is a light weight process task.
-#include<bits/stdc++.h>
-using namespace std;
 
-int main(){
-    Thread T1;
-}
+2) Pitfall of concurrency
+
+- Race condition
+- Deadlock
+- Memory visibility
+
+concurrency - interleaving tasks
+parallelism - simultaneous tasks
+Thread share memory, process are isloated.
