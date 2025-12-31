@@ -33,3 +33,12 @@ Task3 -> Task4 -> Task3 -> Task4
 concurrency - interleaving tasks
 parallelism - simultaneous tasks
 Thread share memory, process are isloated.
+
+Avoid dangling reference - concurrency_pitfall.cpp
+
+3) Mutual exclusion with Mutexes and Locks
+
+Race condition - that's why we need mutual exclusion
+Critical section - code must run by one thread at a time
+
+RAII - Resource Acquisition Is Initialization

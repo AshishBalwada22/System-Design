@@ -6,7 +6,12 @@ int counter = 0;
 void task(int n){
     for(int i=0;i<n;i++){
         counter++;
-        // here increment opertion following three steps - read, increment, write
+        // Increment a counter involves multiple steps at lower level (i.e assembly code)
+        // read, increment, write
+        // current value of counter is loaded into register
+        // value in the register is incremented
+        // value from register written back to counter
+        // if multiple thread trying to execute counter++ concurrently, their operations can interleave  
     }
 }
 int main(){
