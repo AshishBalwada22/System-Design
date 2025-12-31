@@ -7,6 +7,8 @@ mutex m;
 void increment(){
     for(int i=0;i<1000000;i++){
         // lock_guard -> smart lock, is a RAII wrapper around a mutex
+        // lock_guard locks when created and unlock when destroyed.
+        // Exeptions or early returns are safe - RAII does the cleanup.
         lock_guard<mutex> lock(m); // lock_guard object is created, its constructor call lock()
         counter++;
         /*
