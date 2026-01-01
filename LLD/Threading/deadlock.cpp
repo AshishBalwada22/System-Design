@@ -3,12 +3,13 @@
 // 1) consistent order - everywher acquire m1 before m2 or m2 before m1
 // 2) scoped_lock(lock + adopt_lock)(C++ 17+) - whenever you try to hold multiple lock at once.
 // 3) try_lock - back off instead of waiting forever
-// 
+
 #include<bits/stdc++.h>
 using namespace std;
 
 mutex m1,m2;
-
+/*
+// deadlock
 void func1(){
     lock_guard<mutex> obj1(m1);
     this_thread::sleep_for(10ms);
@@ -20,6 +21,25 @@ void func2(){
     lock_guard<mutex> obj1(m2);
     this_thread::sleep_for(10ms);
     lock_guard<mutex> obj2(m1);
+    cout<<"func2 completed"<<endl;
+}
+*/
+
+//scoped_lock - lock_guard + adopt_lock
+void func1(){
+    //scoped_lock lock(m1,m2);
+    lock(m1,m2);
+    lock_guard<mutex> obj1(m1,adopt_lock);
+    this_thread::sleep_for(20ms);
+    lock_guard<mutex> obj2(m2,adopt_lock);
+    cout<<"func1 completed"<<endl;
+}
+
+void func2(){
+    //scoped_lock lock(m1,m2);
+    lock_guard<mutex> obj1(m2,adopt_lock);
+    this_thread::sleep_for(20ms);
+    lock_guard<mutex> obj2(m1,adopt_lock);
     cout<<"func2 completed"<<endl;
 }
 
