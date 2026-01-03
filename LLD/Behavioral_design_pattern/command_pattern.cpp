@@ -4,6 +4,7 @@
 // light object is used by concrete command class or main, so use shared pointer
 // we have command interface, implemented by light on/off
 // we have invoker(remote control) which contain command object
+// when it is used - GUI buttons, menu actions, undo/redo, macro recording, job queues
 
 #include<bits/stdc++.h>
 using namespace std;
