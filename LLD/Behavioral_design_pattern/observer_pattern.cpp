@@ -6,6 +6,8 @@
 // newsAgency(subject) can registered newsChannel(observer) or unregistered newsChannel
 // newsAgency set news, then will call notifyObserver() to notify all the newsChannel(observer) that there is new update came.
 
+// where it is used - GUIS, event systems, push notifications, messaging, "notify me" on restock, anytime multiple object needs live update from single resource.
+
 #include<bits/stdc++.h>
 using namespace std;
 
