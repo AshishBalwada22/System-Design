@@ -136,7 +136,7 @@ class parkingLotService{
     parkingLot parkinglot;
     public:
     void parkVehicle(){ // return ticket
-     
+     // first 
     }
     int getAvailabilitySpot(string licensePlate, vechicleType vtype){
         int total = 0;
