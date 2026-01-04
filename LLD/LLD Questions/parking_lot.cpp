@@ -100,6 +100,12 @@ class parkingSpot{
         // TODO
         return true;
     }
+    void markedOccupied(){
+        isOccupied = true;
+    }
+    void markedFree(){
+        isOccupied = false;
+    }
 };
 class parkingLevel{
     int id;
@@ -113,6 +119,22 @@ class parkingLevel{
         }
         return cnt;
     }
+    parkingSpot* findSpot(vechicleType vtype){
+        for(auto pspot : parkingSpots){
+            if(!pspot.getIsOccupied() && pspot.canFitIntoParkingSpot(vtype)) return &pspot;
+        }
+        return nullptr;
+    }
+    vector<parkingSpot> getSpots(){
+        return parkingSpots;
+    }
+};
+class ticketRepository{ // save in database
+    public:
+    ticket* createTicket(string licenseplate, int spot_id, int entry_time){
+        // toDO
+        return nullptr;
+    }
 };
 class ticket{
     string id;
@@ -122,6 +144,14 @@ class ticket{
     TimePoint entry_time;
     TimePoint exit_time;
     double fees;
+    bool isClosed;
+    public:
+    string getId(){
+        return id;
+    }
+    bool markedClosed(){
+        isClosed = true;
+    }
 };
 class parkingLot{
     int id;
@@ -132,25 +162,85 @@ class parkingLot{
     }
 };
 
-class parkingLotService{
-    parkingLot parkinglot;
+class ISpotAssignmentStrategy{
     public:
-    void parkVehicle(){ // return ticket
-     // first 
+    virtual parkingSpot* findspot(vector<parkingLevel>&level, vechicleType type) = 0;
+};
+
+class lowLevelFirstStrategy : public  ISpotAssignmentStrategy{
+    public:
+    parkingSpot* findspot(vector<parkingLevel>&level, vechicleType type){
+        parkingSpot* spot = level.findSpot(type);
+        if(!spot) return spot;
+    }
+    return nullptr;
+};
+
+class IRateCalculationStrategy{
+    public:
+    virtual double calculateFees(ticket tickett, TimePoint time_point) = 0;
+};
+
+class hourlyCalculationStrategy : public IRateCalculationStrategy{
+    public:
+    double calculateFees(ticket tickett, TimePoint time_point) override{
+        // todo
+    }
+}
+
+// there should be dependency injection on service while applying strategy pattern
+class parkingLotService{
+    parkingLot parkinglot_;
+    ISpotAssignmentStrategy* spotStrategy_;
+    IRateCalculationStrategy* feeStrategy_;
+    mutex m; // raced condition for multiple entry and exit
+    public:
+    parkingLotService(parkingLot parkinglot, ISpotAssignmentStrategy* spotStrategy, hourlyCalculationStrategy* feeStrategy): parkinglot_(parkinglot), spotStrategy_(spotstrategy), feeStrategy_(feeStrategy){}
+    string parkVehicle(string licensePlate, vechicleType type){ 
+     lock_guard<mutex> obj(m);
+     // find the spot
+     parkingSpot* spot = spotStrategy_->findSpot(parkinglot_.getParkingLevel(),type);
+     if(!spot){
+        throw runtime_error("no free spot found"); 
+     }
+     // generate the ticket
+     ticket* tickett = ticketRepository.createTicket(licensePlate,spot->id,clock::now());
+     // book the ticket
+     spot->markedOccupied();
+     return ticket->getId();
+    }
+    void unparkVehicle(string ticket_id){
+     lock_guard<mutex> obj(m);
+     ticket* tickett = ticketRepository.getTicket(ticket_id);
+     if(!tickett){
+        throw runtime_error("no such ticket is created");
+     }
+     if(ticket->isClosed()){
+        throw runtime_error("ticket is already closed");
+     }
+     // do price calculation  
+     auto now = clock::now();
+     double fee = feeStrategy_->calculateFees(*ticket,now);
+     // close the ticket
+     ticket->exit_time = now;
+     ticket->fees = fee;
+     ticket->markedClosed();
+     // free the spot
+     for(auto& level : parkinglot_.getParkingLevel()){
+        for(auto& spot : level.getSpots()){
+            if(spot.getId()==tickett->getId())
+            {
+                spot.markedFree();
+            }
+        }
+     }
+     return fee;
     }
     int getAvailabilitySpot(string licensePlate, vechicleType vtype){
         int total = 0;
-        for(auto& plevel : parkinglot.getParkingLevel()){
+        for(auto& plevel : parkinglot_.getParkingLevel()){
             total+=plevel.countFreeSpots(vtype);
         }
         return total;
     }
-    void unparkVehicle(){
-
-    }
-
 };
-
-int main(){
-
-}
