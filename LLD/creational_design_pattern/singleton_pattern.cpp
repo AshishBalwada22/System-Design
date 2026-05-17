@@ -9,7 +9,8 @@ using namespace std;
 /*
 class Logger{
     private : 
-    Logger() = default; //prevent direct instantiation from outside.
+    Logger() = default; //prevent direct instantiation from outside, cannot create object of class if constructor defined privately
+    // deleted copy constructor and assignment operator
     Logger(const Logger&) = delete; // prevent creating copies of singleton instance.
     Logger& operator=(const Logger&) = delete; // prevent assigning of singleton instance to another.
 
