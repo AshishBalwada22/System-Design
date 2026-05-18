@@ -1,6 +1,6 @@
 // deadlock - two thread, two mutexes, each grab one, then waits for the other - no one can proceed.
 // how to resolve this
-// 1) consistent order - everywher acquire m1 before m2 or m2 before m1
+// 1) consistent order - everywhere acquire m1 before m2 or m2 before m1
 // 2) scoped_lock(lock + adopt_lock)(C++ 17+) - whenever you try to hold multiple lock at once.
 // 3) try_lock - back off instead of waiting forever
 
