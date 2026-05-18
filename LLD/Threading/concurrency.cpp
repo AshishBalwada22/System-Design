@@ -1,4 +1,19 @@
-1) concurreny v/s parallelism
+1) concurency
+2) thread
+3) join_detach
+4) pass_by_value_and_reference
+5) concurrency_pitfall
+6) race
+7) mutex_and_lock_guard
+8) unique_lock
+9) deadlock
+10) condition_variable_and_production
+11) thread_safe_queue
+12) atomic
+13) call_once
+14) promise_future_async
+
+1) concurrency v/s parallelism
 
 // Not concurrent, Not parallel
 1 core 
