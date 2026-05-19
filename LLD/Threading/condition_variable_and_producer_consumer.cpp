@@ -32,7 +32,7 @@ void consumer(){
         // check condition, if true then starts consuming otherwise goes to sleep again
         // lock_guard  doesn't do unlock and re-lock
         // cv.wait(obj,predicate);
-        cv.wait(obj, []{
+        cv.wait(obj, [](){
             if(!q.empty()||done) return true;
             return false;
         });
