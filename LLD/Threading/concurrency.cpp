@@ -7,8 +7,8 @@
 7) mutex_and_lock_guard
 8) unique_lock
 9) deadlock
-10) condition_variable_and_production
-11) thread_safe_queue
+10) thread_safe_queue
+11) condition_variable_and_production
 12) atomic
 13) call_once
 14) promise_future_async
