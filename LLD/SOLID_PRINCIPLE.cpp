@@ -148,7 +148,7 @@ class bird{
 class penguin : public bird{
     public : 
     void eat() override{}
-    void fly() overrid{}  // penguin can't fly, so violation of LSP
+    void fly() override{}  // penguin can't fly, so violation of LSP
 };
 int main(){
     Bird bird = new bird();
