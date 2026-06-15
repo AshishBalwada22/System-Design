@@ -240,6 +240,33 @@ stack memory allocation is done at compile time, automatically deallocated memor
 heap memory allocation is done at runtime, manually deallocated using delete operator
 new used to allocate memory on heap and return pointer to the allocated memory
 
+-----------------------------------------------------------------------------------
+Abstract class
+- with atleast one pure virtual function
+- cannot create object of abstract class
+
+class payment{
+    protected:
+    double amount;
+    public: 
+    payment(double amount){
+        this->amount = amount;
+    }
+    virtual void pay() = 0; // pure virtual function    
+};
+
+class upipayment : public payment{
+    private:
+    string id;
+    public:
+    upipayment(double amount, string id) : payment(amount){
+        this->id = id;
+    }
+    void pay(){
+        cout<<amount<<" "<<id<<endl;
+    }
+};
+
 
 
 
