@@ -267,6 +267,142 @@ class upipayment : public payment{
     }
 };
 
+--------------------------------------------------------------------------------------------------------------------------------------------------
+Inheritance
+1) multiple inheritance
+- derived class can inherit from multiple base class
+- java does not support multiple inheritance
+i.e printer,scanner -> smart pointer
+i.e sms(send), email(send) -> push_notification(send)
+
+- use scope resolution operator to call the function, object.class_name::function_name()
+
+--------------------------------------------------------------------------------------------------------------------------------------------------
+constructor
+
+1) copy constructor
+- to create new object from existing object
+i.e student s2=s1;
+    student s3(s2);
+
+class_name(const class_name& obj){
+    // copy data members from obj to current object
+}  
+- if not use &, then infinite recursion will occur, because copy constructor will be called again and again to copy the object
+
+---------------------------------------------------------------------------------------------------------------------------------------------------
+shallow copy and deep copy
+1) shallow copy
+- address get copied
+
+class student{
+    private:
+    char* name;
+    public:
+    student(char* n){
+        name = new char[strlen(n)+1];
+        strcpy(name,n);
+    }
+    void display(){
+        cout<<name<<endl;
+    }
+    ~student(){
+        delete[] name;
+    }
+};
+
+int main(){
+    student s1("Ashish");
+    student s2 = s1; // shallow copy, address get copied
+    s1.display();
+    s1.name[0]='B';
+    s2.display(); // Bshish, because both s1 and s2 point to same address, this happens only when we use pointer(we allocate memory using new keyword dynamically))
+}
+
+
+- change in one object will affect the other object
+- double delete problem
+- undefined behavior
+
+
+2) Deep copy
+- allocate new memory and copy the value from one object to another -> for this we define custom copy constructor
+
+class student{
+    private:
+    char* name;
+    public:
+    student(char* n){
+        name = new char[strlen(n)+1];
+        strcpy(name,n);
+    }
+    student(const student& s){
+        name = new char[strlen(s.name)+1];
+        strcpy(name,s.name);
+        cout<<"deep copy constructor called"<<endl;
+    }
+    void display(){
+        cout<<name<<endl;
+    }
+    ~student(){
+        delete[] name;
+    }
+};
+
+int main(){
+    student s1("Ashish");
+    student s2 = s1; // deep copy, new memory get allocated and value get copied
+    s1.display();
+    s1.name[0]='B';
+    s2.display(); // Ashish, because both s1 and s2 point to different address
+}
+
+- we write custom copy constructor to do deep copy
+
+------------------------------------------------------------------------------------------------------------------------------------------------
+copy constructor vs assignment operator
+1) copy constructor
+student s2 = s1; // copy constructor called , while creating new object 
+
+2) assignment operator
+student s2;
+s2 = s1; // assignment operator called, when we assign value to existing object
+
+-------------------------------------------------------------------------------------------------------------------------------------------------
+constructor member intializer list
+- student(string n) : name(n){} // here don't need to make copy, directly assignment
+
+student(string n){
+    name = n; // first we make copy and then assignment
+}
+
+- we need intializer list when we use const key because we cannot assign value to const variable after initialization
+
+order of initialization 
+- depend upon data member define in a class
+
+--------------------------------------------------------------------------------------------------------------------------------------------------
+
+Rule of 3
+- if we do manually resource management in case of raw pointer, then we need to define destructor, copy constructor and copy assignment operator.
+if we need any one of them, then we need to define all three of them otherwise we will get shallow copy and double delete problem
+
+Rule of 5
+- if we do manually resource management in case of raw pointer, then we need to define destructor, copy constructor, copy assignment operator, move constructor and move assignment operator.
+if we need any one of them, then we need to define all five of them otherwise we will get shallow copy and double delete problem    
+
+Rule of 0 - modern c++
+- vector, string, smart pointer manage the resource automatically
+
+-----------------------------------------------------------------------------------
+Encapsulation
+- binding data and function together in a single unit called class
+- restrict direct access to data member
+
+-----------------------------------------------------------------------------------
+
+
+
 
 
 
