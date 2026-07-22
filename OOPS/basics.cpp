@@ -83,7 +83,7 @@ int main(){
 
 -------------------------------------------------------------------------------------
 static keyword
-- member that below to class rather than individual object
+- member that belong to class rather than individual object
 - static data member is shared data member amoung all objects
 
 // if we want to find the number of object created, then we can use static data member
