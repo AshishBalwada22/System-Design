@@ -3,7 +3,7 @@
 Dicate all the services to other classes like document and persistence classes. So it has only one responsibility.
 2) OCP (open closed principle) - if we want to add new element like video, we can create a new class videoElement which will implement documentElement interface and override render method.
 3) DIP (dependency inversion principle) - documentEditor class is dependent on abstraction like document and persistence classes. Not directly dependent on low level module like file handling.
-
+Principle of least knowledge -> you should always talk to your immediate friend.
 */
 
 
